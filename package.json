@@ -1,0 +1,38 @@
+{
+  "name": "amana-relayer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "node dist/index.js",
+    "dev": "npm run build && npm start",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --ext .ts src --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Unlicense",
+  "dependencies": {
+    "body-parser": "1.20.2",
+    "dotenv": "16.4.5",
+    "ethers": "6.11.1",
+    "express": "4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/parser": "6.21.0",
+    "eslint": "8.56.0",
+    "eslint-config-principled": "1.1.1",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-jest": "27.9.0",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "ts-loader": "9.5.1",
+    "typescript": "5.3.3",
+    "webpack": "5.90.3",
+    "webpack-cli": "5.1.4",
+    "webpack-node-externals": "3.0.0"
+  }
+}
