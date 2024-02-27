@@ -1,12 +1,18 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import Transaction from './Transaction';
+import database from './database';
 
 const app = express();
 
 app.use(bodyParser.json());
 
 const port = 9000;
+
+app.get('/positions', async (req, res) => {
+  const positions = await database.getBets();
+  res.json(positions);
+});
 
 app.post('/send-transaction', async (req, res) => {
   const { data, gasLimit } = req.body;
