@@ -51,6 +51,23 @@ const convertToBet = (value: BetRow): Bet => {
   };
 };
 
+const updateBetToRedeeming = async (betId: string): Promise<void> => {
+  const query = 'UPDATE Bets SET state=$1 WHERE id=$2';
+  const params = ['Redeeming', betId];
+  await connection.query(query, params);
+}
+
+const getBetId = async (redemptionAddress: string): Promise<string> => {
+  const query = 'SELECT * FROM Bets WHERE status=$1 AND redemptionaddress=$2 LIMIT 1';
+  const params = ['Placed', redemptionAddress];
+  const results = await connection.query(query, params);
+  const row = results.rows[0];
+  if (!isBetRow(row)) {
+    throw new Error('Expected the row to be a BetRow');
+  }
+  return convertToBet(row).id;
+}
+
 const getBets = async (): Promise<Bet[]> => {
   const query = 'SELECT * FROM Bets ORDER BY timestamp ASC';
   const results = await connection.query(query);
@@ -66,5 +83,7 @@ const getBets = async (): Promise<Bet[]> => {
 }
 
 export default {
+  updateBetToRedeeming,
+  getBetId,
   getBets,
 };
