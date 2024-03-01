@@ -73,7 +73,6 @@ const getBets = async (): Promise<Bet[]> => {
   const results = await connection.query(query);
   const rows = results.rows;
   const bets = rows.map((row: unknown) => {
-    console.log('row', row);
     if (!isBetRow(row)) {
       throw new Error('Expected the row to be a BetRow');
     }

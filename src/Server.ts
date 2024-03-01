@@ -46,8 +46,6 @@ app.post('/redeem', async (req, res) => {
 
 app.post('/send-transaction', async (req, res) => {
   const { data, gasLimit } = req.body;
-  console.log('data', data);
-  console.log('gasLimit', gasLimit);
   if (typeof data !== 'string') {
     return res.json({
       success: false,
@@ -60,7 +58,6 @@ app.post('/send-transaction', async (req, res) => {
   }
   try {
     const txid = await Transaction.send(data, BigInt(gasLimit));
-    console.log('txid', txid);
     res.json({
       success: false,
       txid,

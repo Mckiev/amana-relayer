@@ -15,11 +15,8 @@ const send = async (data: string, gasLimit: bigint): Promise<string> => {
     maxPriorityFeePerGas: constants.MAX_PRIORITY_FEE_PER_GAS,
     type: constants.TRANSACTION_TYPE,
   };
-  console.log('transaction', transaction)
   const transactionResponse = await wallet.sendTransaction(transaction);
-  console.log('transactionResponse', transactionResponse)
   const receipt = await transactionResponse.wait(3);
-  console.log('receipt', receipt)
   if (receipt?.hash === undefined) {
     throw new Error('Transaction failed');
   }
