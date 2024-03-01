@@ -34,6 +34,9 @@ app.post('/redeem', async (req, res) => {
       throw new Error('Invalid signature');
     }
     await database.updateBetToRedeeming(betId);
+    res.json({
+      success: true,
+    });
   } catch (e: unknown) {
     res.json({
       success: false,
