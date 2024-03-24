@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import Transaction from './Transaction';
 import database from './database';
 import { RailgunEngine, verifyED25519 } from '@railgun-community/engine';
@@ -10,6 +11,7 @@ const REDEEM_MESSAGE_HEX = '52656465656d20414d414e4120426574';
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const port = 9000;
 
@@ -59,7 +61,7 @@ app.post('/send-transaction', async (req, res) => {
   try {
     const txid = await Transaction.send(data, BigInt(gasLimit));
     res.json({
-      success: false,
+      success: true,
       txid,
     });
   } catch (e) {
