@@ -74,7 +74,7 @@ app.post('/send-transaction', async (req, res) => {
 app.get('/stats', async (req, res) => {
   // const nUsers = await database.getStats();
   res.json({nUsers: 100, nBets: 1023});
-}
+});
 
 const initialize = async () => {
   app.listen(port, () => {
