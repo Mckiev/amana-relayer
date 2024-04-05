@@ -5,6 +5,7 @@ import {
   Bet,
   BetRow,
   ShareType,
+  isObjectRecord,
 } from './types';
 
 const pool = new Pool({
@@ -84,29 +85,50 @@ const getBets = async (): Promise<Bet[]> => {
 const getNUsers = async (): Promise<number> => {
   const query = 'SELECT COUNT(DISTINCT(manifolduserid)) FROM deposits';
   const result = await connection.query(query);
-  if (typeof result !== 'number') {
-    throw new Error('Unexpected result type for getNUsers');
+  if (result.rows.length === 0) {
+    throw new Error(`unexpected result: ${result}`);
   }
-  return result;
+  const row: unknown = result.rows[0];
+  if (!isObjectRecord(row) || typeof row.count !== 'string') {
+    throw new Error('Invalid row');
+  }
+  return Number(row.count);
 }
 
 const getNBets = async (): Promise<number> => {
   const query = 'SELECT COUNT(*) FROM bets';
   const result = await connection.query(query);  
-  if (typeof result !== 'number') {
-    throw new Error('Unexpected result type for getNUsers');
-  }  
-  return result;
+  if (result.rows.length === 0) {
+    throw new Error(`unexpected result: ${result}`);
+  }
+  const row: unknown = result.rows[0];
+  if (!isObjectRecord(row) || typeof row.count !== 'string') {
+    throw new Error('Invalid row');
+  }
+  return Number(row.count);
 }
 
 const getTotalManaInflow = async (): Promise<number> => {
   const query = 'SELECT SUM(amount) FROM deposits';
-  const depositedAmount = await connection.query(query);
+  const result1 = await connection.query(query);
   const query2 = 'SELECT SUM(amount) FROM withdrawals';
-  const withdrawnAmount = await connection.query(query2);
-  if (typeof depositedAmount !== 'number' || typeof withdrawnAmount !== 'number') {
-    throw new Error('Unexpected result type for getTotalManaInflow');
+  const result2 = await connection.query(query2);
+  if (result1.rows.length === 0) {
+    throw new Error(`unexpected result: ${result1}`);
   }
+  const row: unknown = result1.rows[0];
+  if (!isObjectRecord(row) || typeof row.sum !== 'string') {
+    throw new Error('Invalid row');
+  }
+  const depositedAmount = Number(row.sum);
+  if (result2.rows.length === 0) {
+    throw new Error(`unexpected result: ${result2}`);
+  }
+  const row2: unknown = result2.rows[0];
+  if (!isObjectRecord(row2) || typeof row.sum !== 'string') {
+    throw new Error('Invalid row');
+  }
+  const withdrawnAmount = Number(row2.sum);
   return depositedAmount - withdrawnAmount;
 }
 
