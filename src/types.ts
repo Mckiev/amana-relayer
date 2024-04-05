@@ -76,6 +76,7 @@ const isBetState = (value: unknown): value is BetState => (
 export {
   isBetState,
   isBetRow,
+  isObjectRecord,
   Bet,
   BetRow,
   ShareType,
