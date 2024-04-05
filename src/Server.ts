@@ -72,8 +72,10 @@ app.post('/send-transaction', async (req, res) => {
 });
 
 app.get('/stats', async (req, res) => {
-  // const nUsers = await database.getStats();
-  res.json({nUsers: 100, nBets: 1023});
+  const nUsers = await database.getNUsers();
+  const nBets = await database.getNBets();
+  const totalManaInflow = await database.getTotalManaInflow();
+  res.json({nUsers: nUsers, nBets: nBets, totalManaInflow: totalManaInflow});
 });
 
 const initialize = async () => {

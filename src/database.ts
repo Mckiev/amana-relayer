@@ -81,8 +81,40 @@ const getBets = async (): Promise<Bet[]> => {
   return bets;
 }
 
+const getNUsers = async (): Promise<number> => {
+  const query = 'SELECT COUNT(DISTINCT(manifolduserid)) FROM deposits';
+  const result = await connection.query(query);
+  if (typeof result !== 'number') {
+    throw new Error('Unexpected result type for getNUsers');
+  }
+  return result;
+}
+
+const getNBets = async (): Promise<number> => {
+  const query = 'SELECT COUNT(*) FROM bets';
+  const result = await connection.query(query);  
+  if (typeof result !== 'number') {
+    throw new Error('Unexpected result type for getNUsers');
+  }  
+  return result;
+}
+
+const getTotalManaInflow = async (): Promise<number> => {
+  const query = 'SELECT SUM(amount) FROM deposits';
+  const depositedAmount = await connection.query(query);
+  const query2 = 'SELECT SUM(amount) FROM withdrawals';
+  const withdrawnAmount = await connection.query(query2);
+  if (typeof depositedAmount !== 'number' || typeof withdrawnAmount !== 'number') {
+    throw new Error('Unexpected result type for getTotalManaInflow');
+  }
+  return depositedAmount - withdrawnAmount;
+}
+
 export default {
   updateBetToRedeeming,
   getBetId,
   getBets,
+  getNUsers,
+  getNBets,
+  getTotalManaInflow,
 };
